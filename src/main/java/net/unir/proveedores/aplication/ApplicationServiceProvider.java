@@ -9,4 +9,6 @@ public interface ApplicationServiceProvider {
     ProviderDomainDTO getProvidersById(Long id);
     List<ProviderAdapterDTO> getAll();
     Long getCountProviders();
+    ProviderDomainDTO saveProvider(ProviderAdapterDTO adapterDTO);
+    ProviderDomainDTO deleteProvider(Long id);
 }

@@ -3,11 +3,9 @@ package net.unir.proveedores.adapter.restful.v1.rest;
 import net.unir.proveedores.adapter.restful.v1.mappers.AdapterProviderMapper;
 import net.unir.proveedores.adapter.restful.v1.models.ProviderAdapterDTO;
 import net.unir.proveedores.aplication.ApplicationServiceProvidersImpl;
+import net.unir.proveedores.domain.entities.ProviderDomainDTO;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -36,4 +34,13 @@ public class RestfulAdapterProviders {
         return mapper.fromDomainToAdapterList(mapper.fromAdapterToDomainList(serviceProviders.getAll()));
     }
 
+    @PostMapping("/")
+    public ProviderAdapterDTO save(@RequestBody ProviderAdapterDTO adapterDTO){
+        return mapper.fromDomainToAdapter(serviceProviders.saveProvider(adapterDTO));
+    }
+
+    @DeleteMapping("{id}")
+    public ProviderAdapterDTO save(@PathVariable Long id){
+        return mapper.fromDomainToAdapter(serviceProviders.deleteProvider(id));
+    }
 }

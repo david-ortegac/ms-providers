@@ -32,4 +32,14 @@ public class ApplicationServiceProvidersImpl implements ApplicationServiceProvid
     public Long getCountProviders() {
         return repositoryDomain.getProvidersCount();
     }
+
+    @Override
+    public ProviderDomainDTO saveProvider(ProviderAdapterDTO adapterDTO) {
+        return repositoryDomain.save(adapterDTO);
+    }
+
+    @Override
+    public ProviderDomainDTO deleteProvider(Long id) {
+        return repositoryDomain.delete(id);
+    }
 }

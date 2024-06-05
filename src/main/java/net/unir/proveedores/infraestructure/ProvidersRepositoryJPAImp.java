@@ -1,5 +1,6 @@
 package net.unir.proveedores.infraestructure;
 
+import net.unir.proveedores.adapter.restful.v1.models.ProviderAdapterDTO;
 import net.unir.proveedores.domain.ProvidersRepositoryDomain;
 import net.unir.proveedores.domain.entities.ProviderDomainDTO;
 import net.unir.proveedores.infraestructure.entities.ProvidersJPA;
@@ -38,7 +39,8 @@ public class ProvidersRepositoryJPAImp implements ProvidersRepositoryDomain {
     }
 
     @Override
-    public ProviderDomainDTO save() {
+    public ProviderDomainDTO save(ProviderAdapterDTO adapterDTO) {
+        //return mapper.toDomain(repositoryJPA.save(adapterDTO));
         return null;
     }
 
@@ -48,7 +50,9 @@ public class ProvidersRepositoryJPAImp implements ProvidersRepositoryDomain {
     }
 
     @Override
-    public ProviderDomainDTO delete() {
-        return null;
+    public ProviderDomainDTO delete(Long id) {
+        Optional<ProvidersJPA> deleted = repositoryJPA.findById(id);
+        repositoryJPA.deleteById(id);
+        return mapper.toDomain(deleted.orElseThrow());
     }
 }
