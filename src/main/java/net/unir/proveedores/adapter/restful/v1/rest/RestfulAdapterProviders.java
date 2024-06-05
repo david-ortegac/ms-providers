@@ -1,12 +1,17 @@
 package net.unir.proveedores.adapter.restful.v1.rest;
 
+import jakarta.validation.Valid;
 import net.unir.proveedores.adapter.restful.v1.mappers.AdapterProviderMapper;
 import net.unir.proveedores.adapter.restful.v1.models.ProviderAdapterDTO;
 import net.unir.proveedores.aplication.ApplicationServiceProvidersImpl;
 import net.unir.proveedores.domain.entities.ProviderDomainDTO;
+import org.apache.http.protocol.ResponseContent;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -20,27 +25,32 @@ public class RestfulAdapterProviders {
     private ApplicationServiceProvidersImpl serviceProviders;
 
     @GetMapping("{id}")
-    public ProviderAdapterDTO getProvidersById(@PathVariable Long id) {
-        return mapper.fromDomainToAdapter(serviceProviders.getProvidersById(id));
+    public ResponseEntity<ProviderAdapterDTO> getProvidersById(@Valid @PathVariable Long id) {
+        return new ResponseEntity<>(mapper.fromDomainToAdapter(serviceProviders.getProvidersById(id)), HttpStatus.OK);
     }
 
     @GetMapping("count")
-    public Long getCountAllProviders() {
-        return serviceProviders.getCountProviders();
+    public ResponseEntity<Long> getCountAllProviders() {
+        return new ResponseEntity<>(serviceProviders.getCountProviders(), HttpStatus.OK);
     }
 
     @GetMapping
-    public List<ProviderAdapterDTO> getAllProviders() {
-        return mapper.fromDomainToAdapterList(mapper.fromAdapterToDomainList(serviceProviders.getAll()));
+    public ResponseEntity<List<ProviderAdapterDTO>> getAllProviders() {
+        return new ResponseEntity<>(mapper.fromDomainToAdapterList(mapper.fromAdapterToDomainList(serviceProviders.getAll())), HttpStatus.OK);
     }
 
-    @PostMapping("/")
-    public ProviderAdapterDTO save(@RequestBody ProviderAdapterDTO adapterDTO){
-        return mapper.fromDomainToAdapter(serviceProviders.saveProvider(adapterDTO));
+    @PostMapping()
+    public ResponseEntity<ProviderAdapterDTO> save(@Valid @RequestBody ProviderAdapterDTO adapterDTO){
+        return new ResponseEntity<>(mapper.fromDomainToAdapter(serviceProviders.saveProvider(adapterDTO)), HttpStatus.CREATED);
+    }
+
+    @PutMapping("{id}")
+    public ResponseEntity<ProviderAdapterDTO> save(@PathVariable Long id, @RequestBody ProviderAdapterDTO adapterDTO){
+        return new ResponseEntity<>(mapper.fromDomainToAdapter(serviceProviders.updateProvider(id, adapterDTO)), HttpStatus.OK);
     }
 
     @DeleteMapping("{id}")
-    public ProviderAdapterDTO save(@PathVariable Long id){
-        return mapper.fromDomainToAdapter(serviceProviders.deleteProvider(id));
+    public ResponseEntity<ProviderAdapterDTO> delete(@PathVariable Long id){
+        return new ResponseEntity<>(mapper.fromDomainToAdapter(serviceProviders.deleteProvider(id)), HttpStatus.OK);
     }
 }

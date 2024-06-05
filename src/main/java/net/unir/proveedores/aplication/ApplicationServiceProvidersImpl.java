@@ -35,7 +35,12 @@ public class ApplicationServiceProvidersImpl implements ApplicationServiceProvid
 
     @Override
     public ProviderDomainDTO saveProvider(ProviderAdapterDTO adapterDTO) {
-        return repositoryDomain.save(adapterDTO);
+        return repositoryDomain.save(mapper.fromAdapterToDomain(adapterDTO));
+    }
+
+    @Override
+    public ProviderDomainDTO updateProvider(Long id, ProviderAdapterDTO adapterDTO) {
+        return repositoryDomain.save(mapper.fromAdapterToDomain(adapterDTO));
     }
 
     @Override

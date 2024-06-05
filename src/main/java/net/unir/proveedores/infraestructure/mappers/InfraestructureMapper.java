@@ -24,5 +24,5 @@ public interface InfraestructureMapper {
 
     List<ProviderDomainDTO> toDomainList(Iterable<ProvidersJPA> items);
 
-    ProvidersJPA fromDomain(ProviderDomainDTO item, @MappingTarget ProvidersJPA jpa);
+    ProvidersJPA fromDomain(ProviderDomainDTO item);
 }
