@@ -4,6 +4,7 @@ import net.unir.proveedores.adapter.restful.v1.mappers.AdapterProviderMapper;
 import net.unir.proveedores.adapter.restful.v1.models.ProviderAdapterDTO;
 import net.unir.proveedores.domain.ProvidersRepositoryDomain;
 import net.unir.proveedores.domain.entities.ProviderDomainDTO;
+import net.unir.proveedores.infraestructure.entities.PageAndFilterParamsDomain;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -24,8 +25,8 @@ public class ApplicationServiceProvidersImpl implements ApplicationServiceProvid
     }
 
     @Override
-    public List<ProviderAdapterDTO> getAll() {
-        return mapper.fromDomainToAdapterList(repositoryDomain.getAll());
+    public List<ProviderAdapterDTO> getAll(PageAndFilterParamsDomain filter) {
+        return mapper.fromDomainToAdapterList(repositoryDomain.getAll(filter));
     }
 
     @Override

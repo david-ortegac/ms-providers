@@ -2,13 +2,13 @@ package net.unir.proveedores.infraestructure.entities;
 
 
 import jakarta.persistence.*;
+import lombok.Data;
 import lombok.Getter;
 import lombok.Setter;
 
 import java.io.Serializable;
 
-@Getter
-@Setter
+@Data
 @Entity
 @Table(name = "providers")
 public class ProvidersJPA implements Serializable {
