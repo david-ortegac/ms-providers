@@ -34,7 +34,7 @@ public class RestfulAdapterProviders {
         return new ResponseEntity<>(mapper.fromDomainToAdapter(serviceProviders.getProvidersById(id)), HttpStatus.OK);
     }
 
-    @PostMapping
+    @PostMapping("/")
     public ResponseEntity<ProviderAdapterDTO> save(@Valid @RequestBody ProviderAdapterDTO adapterDTO){
         return new ResponseEntity<>(mapper.fromDomainToAdapter(serviceProviders.saveProvider(adapterDTO)), HttpStatus.CREATED);
     }
