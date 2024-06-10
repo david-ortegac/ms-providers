@@ -1,6 +1,9 @@
 package net.unir.proveedores.infraestructure;
 
-import io.github.perplexhub.rsql.RSQLSupport;
+import io.micrometer.common.util.StringUtils;
+import net.unir.proveedores.aplication.utils.SearchCriteria;
+import net.unir.proveedores.aplication.utils.SearchOperation;
+import net.unir.proveedores.aplication.utils.SearchStatement;
 import net.unir.proveedores.domain.ProvidersRepositoryDomain;
 import net.unir.proveedores.domain.entities.ProviderDomainDTO;
 import net.unir.proveedores.infraestructure.entities.ProvidersJPA;
@@ -10,7 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -29,16 +31,33 @@ public class ProvidersRepositoryJPAImp implements ProvidersRepositoryDomain {
     @Autowired
     private InfraestructureMapper mapper;
 
+
     @Override
-    public Long getProvidersCount() {
-        return repositoryJPA.count();
+    public List<ProviderDomainDTO> getAll() {
+        Page<ProvidersJPA> providersJPA = repositoryJPA.findAll(pageable);
+        return mapper.toDomainList(providersJPA);
     }
 
     @Override
-    public List<ProviderDomainDTO> getAll(String filter) {
-        String filter2 = "id=bt=(2,4)";
-        Page<ProvidersJPA> providersJPA = repositoryJPA.findAll(pageable);
-        return mapper.toDomainList(providersJPA);
+    public List<ProviderDomainDTO> search(String name, String lastName, String address, String email, String phone) {
+        SearchCriteria<ProvidersJPA> spec = new SearchCriteria<>();
+        if(StringUtils.isNotBlank(name)){
+            spec.add(new SearchStatement("name", name, SearchOperation.MATCH));
+        }
+        if(StringUtils.isNotBlank(lastName)){
+            spec.add(new SearchStatement("lastName", lastName, SearchOperation.MATCH));
+        }
+        if(StringUtils.isNotBlank(address)){
+            spec.add(new SearchStatement("address", address, SearchOperation.MATCH));
+        }
+        if(StringUtils.isNotBlank(email)){
+            spec.add(new SearchStatement("email", email, SearchOperation.MATCH));
+        }
+        if(StringUtils.isNotBlank(phone)){
+            spec.add(new SearchStatement("phone", phone, SearchOperation.MATCH));
+        }
+
+        return mapper.toDomainList(repositoryJPA.findAll(spec));
     }
 
     @Override

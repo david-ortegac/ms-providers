@@ -7,6 +7,7 @@ import net.unir.proveedores.domain.entities.ProviderDomainDTO;
 import net.unir.proveedores.infraestructure.entities.PageAndFilterParamsDomain;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import java.util.List;
 
@@ -25,13 +26,11 @@ public class ApplicationServiceProvidersImpl implements ApplicationServiceProvid
     }
 
     @Override
-    public List<ProviderAdapterDTO> getAll(PageAndFilterParamsDomain filter) {
-        return mapper.fromDomainToAdapterList(repositoryDomain.getAll(filter));
-    }
-
-    @Override
-    public Long getCountProviders() {
-        return repositoryDomain.getProvidersCount();
+    public List<ProviderAdapterDTO> getAll(String name, String LastName, String address, String email, String phone) {
+        if(StringUtils.hasLength(name) || StringUtils.hasLength(LastName) || StringUtils.hasLength(address) || StringUtils.hasLength(email) || StringUtils.hasLength(phone)) {
+            return mapper.fromDomainToAdapterList(repositoryDomain.search(name, LastName, address, email, phone));
+        }
+        return mapper.fromDomainToAdapterList(repositoryDomain.getAll());
     }
 
     @Override

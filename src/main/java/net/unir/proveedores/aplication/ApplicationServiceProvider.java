@@ -7,8 +7,7 @@ import java.util.List;
 
 public interface ApplicationServiceProvider {
     ProviderDomainDTO getProvidersById(Long id);
-    List<ProviderAdapterDTO> getAll(String filter);
-    Long getCountProviders();
+    List<ProviderAdapterDTO> getAll(String name, String LastName, String address, String email, String phone);
     ProviderDomainDTO saveProvider(ProviderAdapterDTO adapterDTO);
     ProviderDomainDTO updateProvider(Long id, ProviderAdapterDTO adapterDTO);
     ProviderDomainDTO deleteProvider(Long id);
