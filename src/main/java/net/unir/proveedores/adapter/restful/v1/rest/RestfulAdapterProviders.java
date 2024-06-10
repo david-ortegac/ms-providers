@@ -23,14 +23,14 @@ public class RestfulAdapterProviders {
     private ApplicationServiceProvider serviceProviders;
 
     @GetMapping
-    public ResponseEntity<List<ProviderAdapterDTO>> getAllProviders(@Valid @RequestParam ProviderAdapterDTO params) {
+    public ResponseEntity<List<ProviderAdapterDTO>> getAllProviders(@Valid @RequestBody ProviderAdapterDTO params) {
         return new ResponseEntity<>(mapper.fromDomainToAdapterList(mapper.fromAdapterToDomainList(serviceProviders.getAll(
                 params.getName(), params.getLastName(), params.getAddress(), params.getEmail(), params.getPhone()
         ))), HttpStatus.OK);
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ProviderAdapterDTO> getProvidersById(@PathVariable Long id) {
+    public ResponseEntity<ProviderAdapterDTO> getProvidersById(@Valid @PathVariable Long id) {
         return new ResponseEntity<>(mapper.fromDomainToAdapter(serviceProviders.getProvidersById(id)), HttpStatus.OK);
     }
 
@@ -41,12 +41,12 @@ public class RestfulAdapterProviders {
 
     @PutMapping("/{id}")
     @PatchMapping("/{id}")
-    public ResponseEntity<ProviderAdapterDTO> save(@PathVariable Long id, @RequestBody ProviderAdapterDTO adapterDTO){
+    public ResponseEntity<ProviderAdapterDTO> save(@Valid @PathVariable Long id, @Valid @RequestBody ProviderAdapterDTO adapterDTO){
         return new ResponseEntity<>(mapper.fromDomainToAdapter(serviceProviders.updateProvider(id, adapterDTO)), HttpStatus.OK);
     }
 
     @DeleteMapping("/{id}")
-    public ResponseEntity<ProviderAdapterDTO> delete(@PathVariable Long id){
+    public ResponseEntity<ProviderAdapterDTO> delete(@Valid @PathVariable Long id){
         return new ResponseEntity<>(mapper.fromDomainToAdapter(serviceProviders.deleteProvider(id)), HttpStatus.OK);
     }
 }
