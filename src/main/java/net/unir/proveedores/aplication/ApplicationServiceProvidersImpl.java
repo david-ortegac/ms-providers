@@ -4,7 +4,6 @@ import net.unir.proveedores.adapter.restful.v1.mappers.AdapterProviderMapper;
 import net.unir.proveedores.adapter.restful.v1.models.ProviderAdapterDTO;
 import net.unir.proveedores.domain.ProvidersRepositoryDomain;
 import net.unir.proveedores.domain.entities.ProviderDomainDTO;
-import net.unir.proveedores.infraestructure.entities.PageAndFilterParamsDomain;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -27,20 +26,51 @@ public class ApplicationServiceProvidersImpl implements ApplicationServiceProvid
 
     @Override
     public List<ProviderAdapterDTO> getAll(String name, String LastName, String address, String email, String phone) {
-        if(StringUtils.hasLength(name) || StringUtils.hasLength(LastName) || StringUtils.hasLength(address) || StringUtils.hasLength(email) || StringUtils.hasLength(phone)) {
+        if (StringUtils.hasLength(name)
+                || StringUtils.hasLength(LastName)
+                || StringUtils.hasLength(address)
+                || StringUtils.hasLength(email)
+                || StringUtils.hasLength(phone)) {
             return mapper.fromDomainToAdapterList(repositoryDomain.search(name, LastName, address, email, phone));
         }
         return mapper.fromDomainToAdapterList(repositoryDomain.getAll());
     }
 
     @Override
-    public ProviderDomainDTO saveProvider(ProviderAdapterDTO adapterDTO) {
-        return repositoryDomain.save(mapper.fromAdapterToDomain(adapterDTO));
+    public ProviderDomainDTO saveProvider(ProviderAdapterDTO adapterDTO) throws Exception {
+        if (StringUtils.hasLength(adapterDTO.getName())
+                && StringUtils.hasLength(adapterDTO.getLastName())
+                && StringUtils.hasLength(adapterDTO.getAddress())
+                && StringUtils.hasLength(adapterDTO.getPhone())
+                && StringUtils.hasLength(adapterDTO.getEmail())
+        ) {
+            return repositoryDomain.save(mapper.fromAdapterToDomain(adapterDTO));
+        } else {
+            throw new Exception("Datos faltantes");
+        }
     }
 
     @Override
     public ProviderDomainDTO updateProvider(Long id, ProviderAdapterDTO adapterDTO) {
-        return repositoryDomain.save(mapper.fromAdapterToDomain(adapterDTO));
+        ProviderDomainDTO provider = this.getProvidersById(id);
+        adapterDTO.setId(id);
+        if(null != adapterDTO.getName()) {
+            provider.setName(adapterDTO.getName());
+        }
+        if(null != adapterDTO.getLastName()) {
+            provider.setLastName(adapterDTO.getLastName());
+        }
+        if(null != adapterDTO.getAddress()) {
+            provider.setAddress(adapterDTO.getAddress());
+        }
+        if(null != adapterDTO.getPhone()) {
+            provider.setPhone(adapterDTO.getPhone());
+        }
+        if(null != adapterDTO.getEmail()) {
+            provider.setEmail(adapterDTO.getEmail());
+        }
+
+        return repositoryDomain.save(mapper.fromAdapterToDomain(mapper.fromDomainToAdapter(provider)));
     }
 
     @Override

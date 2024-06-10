@@ -23,7 +23,7 @@ public class RestfulAdapterProviders {
     private ApplicationServiceProvider serviceProviders;
 
     @GetMapping
-    public ResponseEntity<List<ProviderAdapterDTO>> getAllProviders(@Valid @RequestBody ProviderAdapterDTO params) {
+    public ResponseEntity<List<ProviderAdapterDTO>> getAllProviders(@Valid ProviderAdapterDTO params) {
         return new ResponseEntity<>(mapper.fromDomainToAdapterList(mapper.fromAdapterToDomainList(serviceProviders.getAll(
                 params.getName(), params.getLastName(), params.getAddress(), params.getEmail(), params.getPhone()
         ))), HttpStatus.OK);
@@ -35,7 +35,7 @@ public class RestfulAdapterProviders {
     }
 
     @PostMapping("/")
-    public ResponseEntity<ProviderAdapterDTO> save(@Valid @RequestBody ProviderAdapterDTO adapterDTO){
+    public ResponseEntity<ProviderAdapterDTO> save(@Valid @RequestBody ProviderAdapterDTO adapterDTO) throws Exception {
         return new ResponseEntity<>(mapper.fromDomainToAdapter(serviceProviders.saveProvider(adapterDTO)), HttpStatus.CREATED);
     }
 
