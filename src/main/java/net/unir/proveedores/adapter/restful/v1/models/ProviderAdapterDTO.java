@@ -11,7 +11,6 @@ import lombok.Setter;
 @Setter
 public class ProviderAdapterDTO {
 
-    @NotNull
     private Long id;
 
     @NotNull
